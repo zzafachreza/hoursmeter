@@ -78,14 +78,14 @@ export default function Splash({ navigation }) {
             }}
           />
           <MyGap jarak={20} />
-          {/* <Animated.Text style={{
-          fontFamily: fonts.secondary[800],
-          fontSize: MyDimensi/4,
-          color: colors.white,
-          marginTop: 10,
-          marginBottom: text,
-          textAlign: 'center',
-        }}>Monitoring Asupan MPASI</Animated.Text> */}
+          <Animated.Text style={{
+            fontFamily: fonts.secondary[600],
+            fontSize: MyDimensi / 4,
+            color: colors.black,
+            marginTop: 10,
+            marginBottom: text,
+            textAlign: 'center',
+          }}>by Rindiani Amelia</Animated.Text>
 
           <ActivityIndicator color={colors.primary} size="large" />
         </View>

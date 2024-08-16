@@ -85,27 +85,46 @@ export default function HoursMeters({ navigation }) {
 
   const [loading, setLoading] = useState(false)
   const sendServer = () => {
-    console.log(kirim);
+    if (kirim.hm_awal.length == 0) {
+      showMessage({
+        type: 'info',
+        message: 'HM Awal wajib diisi !'
+      })
+    } else if (kirim.hm_akhir.length == 0) {
+      showMessage({
+        type: 'info',
+        message: 'HM Terakhir wajib diisi !'
+      })
+    } else if (kirim.jumlah_meter.length == 0) {
+      showMessage({
+        type: 'info',
+        message: 'Jumlah Meter wajib diisi !'
+      })
+    } else {
+      console.log(kirim);
 
-    let TXT = `
-          *INPUT HOURS METER*%0A%0ANama Akun = ${kirim.nama_lengkap} %0ANama Operator = ${kirim.nama_operator} %0AProyek Yang Dikerjakan = ${kirim.proyek} %0AJam Mulai Kerja = ${kirim.jam_awal} %0AJam Terakhir Kerja = ${kirim.jam_akhir} %0ATanggal Kerja = ${kirim.tanggal} %0AKode Unit = ${kirim.kode_unit} %0AHM Awal (Jika Proyek Per HM) = ${kirim.hm_awal} %0AHM Terakhir (Jika Proyek Per HM) = ${kirim.hm_akhir} %0AJumlah Meter (Jika Proyek Per Meter) = ${kirim.jumlah_meter} %0A
+      let TXT = `
+            *INPUT HOURS METER*%0A%0ANama Akun = ${kirim.nama_lengkap} %0ANama Operator = ${kirim.nama_operator} %0AProyek Yang Dikerjakan = ${kirim.proyek} %0AJam Mulai Kerja = ${kirim.jam_awal} %0AJam Terakhir Kerja = ${kirim.jam_akhir} %0ATanggal Kerja = ${kirim.tanggal} %0AKode Unit = ${kirim.kode_unit} %0AHM Awal (Jika Proyek Per HM) = ${kirim.hm_awal} %0AHM Terakhir (Jika Proyek Per HM) = ${kirim.hm_akhir} %0AJumlah Meter (Jika Proyek Per Meter) = ${kirim.jumlah_meter} %0A
+  
+      `;
 
-    `;
 
+      setLoading(true);
+      axios.post(apiURL + 'rekap_insert', kirim).then(res => {
+        console.log(res.data);
+        if (res.data.status == 200) {
+          showMessage({
+            type: 'success',
+            message: res.data.message
+          });
+          Linking.openURL('https://wa.me/' + comp.tlp + '?text=' + TXT);
+        }
+      }).finally(() => {
+        setLoading(false)
+      })
 
-    setLoading(true);
-    axios.post(apiURL + 'rekap_insert', kirim).then(res => {
-      console.log(res.data);
-      if (res.data.status == 200) {
-        showMessage({
-          type: 'success',
-          message: res.data.message
-        });
-        Linking.openURL('https://wa.me/' + comp.tlp + '?text=' + TXT);
-      }
-    }).finally(() => {
-      setLoading(false)
-    })
+    }
+
 
   }
 
